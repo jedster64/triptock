@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "redirects": [
     {
       "source": "/",
@@ -26,3 +27,10 @@
     }
   ]
 }
+=======
+  "version": 2,
+  "builds": [
+    { "src": "next.config.js", "use": "@vercel/next" }
+  ]
+}
+>>>>>>> 3f1e434cb69875717587b4c04836e0f6c6be4dba

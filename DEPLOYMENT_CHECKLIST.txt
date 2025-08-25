@@ -233,6 +233,10 @@ Each product has exactly: app, category, duration_days, placement.
 app = base44 (caravans) or triptock (ads).
 duration_days ∈ {1, 7, 14, 28, 30} (string).
 placement matches function: listings, featured_section, homepage, deal_of_day, deal_of_day_banner,
+<<<<<<< HEAD
 market_top, market_featured, shop_, voucher_, entertainment_*.ls
 
+=======
+market_top, market_featured, shop_, voucher_, entertainment_*.
+>>>>>>> 3f1e434cb69875717587b4c04836e0f6c6be4dba
 No extra keys.

@@ -1,0 +1,238 @@
+
+SUBJECT: TripTock → Vercel config files + deployment checklist
+
+
+
+BODY (paste all of this):
+
+
+
+===== START FILE: vercel.json =====
+
+{
+
+“redirects”: [
+
+{
+
+“source”: “/”,
+
+“has”: [{ “type”: “host”, “value”: “www.base44.com” }],
+
+“destination”: “https://app.base44.com”,
+
+“permanent”: true
+
+},
+
+{
+
+“source”: “/(.)”,
+
+“has”: [{ “type”: “host”, “value”: “www.base44.com” }],
+
+“destination”: “https://app.base44.com/$1”,
+
+“permanent”: true
+
+}
+
+],
+
+“headers”: [
+
+{
+
+“source”: “/(.)”,
+
+“headers”: [
+
+{ “key”: “Strict-Transport-Security”, “value”: “max-age=63072000; includeSubDomains; preload” },
+
+{ “key”: “X-Content-Type-Options”, “value”: “nosniff” },
+
+{ “key”: “X-Frame-Options”, “value”: “SAMEORIGIN” },
+
+{ “key”: “Referrer-Policy”, “value”: “strict-origin-when-cross-origin” },
+
+{ “key”: “Permissions-Policy”, “value”: “geolocation=(), microphone=(), camera=()” }
+
+]
+
+},
+
+{
+
+“source”: “/_next/static/(.)”,
+
+“headers”: [
+
+{ “key”: “Cache-Control”, “value”: “public, max-age=31536000, immutable” }
+
+]
+
+},
+
+{
+
+“source”: “/images/(.)”,
+
+“headers”: [
+
+{ “key”: “Cache-Control”, “value”: “public, max-age=31536000, immutable” }
+
+]
+
+}
+
+]
+
+}
+
+===== END FILE: vercel.json =====
+
+
+
+===== START FILE: next.config.js =====
+
+const nextConfig = {
+
+images: {
+
+unoptimized: true
+
+}
+
+};
+
+module.exports = nextConfig;
+
+===== END FILE: next.config.js =====
+
+
+
+===== START FILE: .env.example =====
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_xxx
+
+STRIPE_SECRET_KEY=sk_live_xxx
+
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+
+NEXT_PUBLIC_APP_URL=https://app.base44.com
+
+VOUCHERS_ENABLED=true
+
+MESSAGING_ENABLED=true
+
+EMAIL_FROM=“TripTock noreply@base44.com”
+
+RESEND_API_KEY=re_xxx
+
+===== END FILE: .env.example =====
+
+
+
+===== START FILE: DEPLOYMENT_CHECKLIST.txt =====
+
+A. Repo prep
+
+[ ] Add vercel.json at repo root (as provided).
+
+[ ] Add next.config.js at repo root (as provided).
+
+[ ] Add .env.example at repo root (as provided).
+
+[ ] Commit and push to main.
+
+
+
+B. Vercel project
+
+[ ] vercel.com → New Project → Import TripTock repo.
+
+[ ] Framework: Next.js.
+
+[ ] Build command: next build.
+
+[ ] After first import, Settings → Environment Variables → add:
+
+- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = pk_live_xxx
+
+- STRIPE_SECRET_KEY = sk_live_xxx
+
+- STRIPE_WEBHOOK_SECRET = whsec_xxx
+
+- NEXT_PUBLIC_APP_URL = https://app.base44.com
+
+- VOUCHERS_ENABLED = true
+
+- MESSAGING_ENABLED = true
+
+- EMAIL_FROM = TripTock noreply@base44.com
+
+- RESEND_API_KEY = re_xxx
+
+[ ] Redeploy.
+
+
+
+C. Domain and DNS
+
+[ ] Vercel → Project → Domains → Add app.base44.com.
+
+[ ] DNS: A record @ → 76.76.21.21 (optional for apex). For subdomain: CNAME app → cname.vercel-dns.com.
+
+[ ] Wait for verification → SSL must show Active.
+
+
+
+D. Stripe webhook
+
+[ ] Stripe Dashboard → Developers → Webhooks → Add endpoint.
+
+[ ] URL: https://app.base44.com/api/webhooks/stripe
+
+[ ] Events: checkout.session.completed, invoice.payment_succeeded,
+
+customer.subscription.updated, customer.subscription.deleted
+
+[ ] Copy signing secret → paste into Vercel env STRIPE_WEBHOOK_SECRET.
+
+[ ] Trigger a test event → confirm 2xx.
+
+
+
+E. Functional checks (on https://app.base44.com)
+
+[ ] Hero buttons show text at idle: Sell Something, List for Hire, Browse to Hire.
+
+[ ] Inputs show placeholders: “List for hire”, “Browse to hire”.
+
+[ ] Listing forms show price tiles (amount + duration) and require a selection.
+
+[ ] Stripe Checkout succeeds; webhook activates listing/ad; expiry set from duration_days.
+
+[ ] /vouchers page lists products and purchase works end-to-end.
+
+[ ] Messaging works between two accounts; unread badges; single email per thread (2‑minute burst control).
+
+[ ] Security headers present: HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
+
+[ ] 404 and 500 pages render.
+
+[ ] Images load (unoptimized=true avoids domain allow-listing blockers).
+
+
+
+F. Stripe metadata rules (confirmation only; do not change products)
+
+
+
+Each product has exactly: app, category, duration_days, placement.
+app = base44 (caravans) or triptock (ads).
+duration_days ∈ {1, 7, 14, 28, 30} (string).
+placement matches function: listings, featured_section, homepage, deal_of_day, deal_of_day_banner,
+market_top, market_featured, shop_, voucher_, entertainment_*.ls
+
+No extra keys.

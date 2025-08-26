@@ -1,0 +1,16 @@
+:root { --max: 980px; --gap: 16px; }
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; font-family: system-ui, Arial, sans-serif; }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: var(--max); margin: 0 auto; padding: 24px var(--gap); }
+.nav {
+  display:flex; gap:12px; align-items:center; border-bottom:1px solid #eee; padding:12px var(--gap);
+}
+.brand { font-weight:700; margin-right:auto; }
+.btn { display:inline-block; padding:10px 14px; border:1px solid #ddd; border-radius:8px; }
+.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap:16px; }
+.card { border:1px solid #eee; border-radius:10px; padding:14px; background:#fff; }
+.muted { color:#666; }
+.footer { border-top:1px solid #eee; padding:24px var(--gap); color:#666; font-size:14px; }
+.hero { padding:24px 0; }

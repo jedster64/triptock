@@ -1,27 +1,19 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 
-const demo = [
-  { id: "101", title: "Cozy Caravan", description: "A lovely caravan near the beach." },
-  { id: "102", title: "Seaside Pitch", description: "Perfect spot with sea views." },
-  { id: "103", title: "Woodland Retreat", description: "Quiet escape in the woods." },
-  { id: "104", title: "Mountain View", description: "Beautiful scenery with mountain views." },
-];
-
-export default function ListingDetail() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const item = demo.find(x => x.id === id);
-
-  if (!item) {
-    return <p>Listing not found.</p>;
-  }
-
+export default function Listings() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>{item.title}</h1>
-      <p>{item.description}</p>
-      <a href="/listings" style={{ display: "block", marginTop: "20px" }}>⬅ Back to Listings</a>
-    </div>
+    <main style={{ fontFamily: "system-ui, Arial, sans-serif", padding: 20 }}>
+      <h1>Caravan Listings</h1>
+      <p>Here are some example listings:</p>
+
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        <li><Link href="/listings/101"><a>Cozy Caravan</a></Link></li>
+        <li><Link href="/listings/102"><a>Seaside Caravan in Skegness</a></Link></li>
+        <li><Link href="/listings/103"><a>Woodland Retreat Caravan</a></Link></li>
+        <li><Link href="/listings/104"><a>Mountain View Static Home</a></Link></li>
+      </ul>
+
+      <a href="/" style={{ display: "block", marginTop: 20 }}>⬅ Back to Home</a>
+    </main>
   );
 }

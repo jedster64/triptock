@@ -7,7 +7,7 @@ export default function Custom404() {
       <Head>
         <title>404 – TripTock</title>
         <meta name="robots" content="noindex" />
-        <meta name="description" content="The page you’re looking for can’t be found on TripTock." />
+        <meta name="description" content="The page you're looking for can't be found on TripTock." />
       </Head>
 
       <h1 style={{ marginBottom: 8 }}>404 – Page Not Found</h1>

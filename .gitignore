@@ -7,3 +7,5 @@ node_modules
 node_modules
 >>>>>>> dc2dd01 (chore: add vercel.json (lowercase) and whitelist)
 !vercel.json
+audit.json
+audit.json

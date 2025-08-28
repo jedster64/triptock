@@ -2,4 +2,8 @@ node_modules
 .next
 .DS_Store
 .env
+<<<<<<< HEAD
+=======
+node_modules
+>>>>>>> dc2dd01 (chore: add vercel.json (lowercase) and whitelist)
 !vercel.json
